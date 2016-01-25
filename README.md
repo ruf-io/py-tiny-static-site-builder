@@ -61,15 +61,15 @@ On Ubuntu systems...
 
 ### Run
 
-# **INITIALIZE** - Specify the general settings in a file in the root directory `config.yaml` _(you
+- **INITIALIZE** - Specify the general settings in a file in the root directory `config.yaml` _(you
   can copy config.yaml.example to get started.)_
 
-# **ADD CONTENT** - Create a new file in `/posts` (doesn't matter what it's called,
+- **ADD CONTENT** - Create a new file in `/posts` (doesn't matter what it's called,
   just needs to end with .yaml) - at a minimum each post should have a `name`, `slug`,
   and `content`. (Although you can change that by editing the post_schema in config.yaml)
 
-# **EDIT TEMPLATES** - Read up on [Mustache](https://mustache.github.io/) syntax
+- **EDIT TEMPLATES** - Read up on [Mustache](https://mustache.github.io/) syntax
   to understand how you can translate data from the post YAML files to HTML
 
-# **BUILD HTML** - If you haven't already setup the incrontab task to auto-build
+- **BUILD HTML** - If you haven't already setup the incrontab task to auto-build
   when a post is modified, you can manually rebuild by just running `python build.py`
