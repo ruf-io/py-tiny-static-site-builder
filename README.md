@@ -18,10 +18,10 @@ On Ubuntu systems...
 3. Clone this repo to the desired location
 
    ```
-   git clone
+   git clone https://github.com/ruf-io/py-tiny-static-site-builder.git
    ```
 
-4. Copy and edit the  example nginx config to reflect your domain and the correct path to local directory
+4. Copy and edit the  example nginx config to reflect your domain and the correct path to webroot
 
    ```
    cp nginx.conf.example nginx.conf
@@ -29,12 +29,14 @@ On Ubuntu systems...
    ```
 
    Edit: `server_name yourdomain.com;`
+
    Edit: `root /path/to/tinysite/static;`
 
-5. Place link to nginx config in required directory
+5. Place link to nginx config in required directory and restart nginx
 
    ```
    sudo ln -s /path/to/tinysite/nginx.conf /etc/nginx/sites-enabled/tinysite.conf
+   sudo service nginx reload
    ```
 
 6. (optionally) Add an incrontab task to trigger a rebuild every time you change a file
