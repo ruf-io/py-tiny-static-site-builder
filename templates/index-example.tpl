@@ -15,6 +15,6 @@
       <h3><a href="{{slug}}">{{name}}</a></h3>
       <p>{{description}}</p>
     </section>
-  {{/repo}}
+  {{/posts}}
 </body>
 </html>
