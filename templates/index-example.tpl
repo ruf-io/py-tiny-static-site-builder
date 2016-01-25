@@ -10,6 +10,11 @@
   <link rel="canonical" href="https://{{domain}}/{{slug}}">
 </head>
 <body>
-  {{posts}}
+  {{#posts}}
+    <section>
+      <h3><a href="{{slug}}">{{name}}</a></h3>
+      <p>{{description}}</p>
+    </section>
+  {{/repo}}
 </body>
 </html>
