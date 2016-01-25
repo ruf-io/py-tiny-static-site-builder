@@ -28,9 +28,11 @@ On Ubuntu systems...
    nano nginx.conf
    ```
 
-   Edit: `server_name yourdomain.com;`
+   Edit: `server_name yourdomain.com;` to reflect your domain.
 
-   Edit: `root /path/to/tinysite/static;`
+   Edit: `root /path/to/tinysite/static;` to reflect the absolute path to the webroot.
+
+   Save and close the nginx config file
 
 5. Place link to nginx config in required directory and restart nginx
 
