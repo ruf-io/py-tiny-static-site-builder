@@ -18,7 +18,7 @@ def validateYaml(f):
 			jsonschema.validate(yaml.load(open(f)), cfg['post_schema'])
 			return True
 		except Exception, e:
-			print ("Error loading post %s: %s" % (f,e))[0:140] + "...\n"
+			print ("Error loading post %s: %s" % (f,e))[0:240] + "...\n"
 	return False
 
 #get posts directory
@@ -49,5 +49,5 @@ for post in posts:
 	out.close()
 
 out = codecs.open(defaults['output_directory'] + 'index.html', 'w', encoding='utf-8')
-out.write(stache.render_name('index', cfg['general']))
+out.write(stache.render_name('index', dict(cfg['general'].items() + {'posts':posts}.items()))
 out.close()
