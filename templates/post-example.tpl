@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{{name}} | RUF.IO</title>
+  <title>{{name}} | {{domain}}</title>
   <meta name="description" content="{{description}}">
   <meta name="author" content="{{author}}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
