@@ -21,10 +21,11 @@ On Ubuntu systems...
    git clone
    ```
 
-4. Edit the nginx config to reflect your domain and the correct path to local directory
+4. Copy and edit the  example nginx config to reflect your domain and the correct path to local directory
 
    ```
-   nano nginx.config
+   cp nginx.conf.example nginx.conf
+   nano nginx.conf
    ```
 
    Edit: `server_name yourdomain.com;`
