@@ -1,0 +1,59 @@
+name: Multi-Touch Attribution Formulas Explained
+description: This article walks through the creation and customization of linear attribution and time-decay attribution models used to distribute conversion credit across multiple visits.
+slug: multi-touch-attribution-formulas
+created_at: 12/20/2015
+tags:
+  - analytics
+  - data
+  - tactics
+  - saas
+content: |
+  I don't have a strong statistics background, so there could be a better way to do attribution. Please suggest edits and I will try and keep this up to date.
+
+  <h4 name="variables">1: The Variables</h4>
+
+  Attribution relies on a data structure of: **USERS** (or Visitors) each of whom must have one or more **SESSIONS** (or Visits) the last of which contains a *CONVERSION EVENT*. From that structure, we build the following calculated metrics that form the building blocks of conversion attribution formulas:
+
+    1. **USER** - Must have: `user_id` _(unique identifier)_, `user_sessions_before_conversion` _(total sessions before conversion)_, `user_lifetime_before_conversion` _(total lifetime before conversion)_
+    2. **SESSION** - Must have: `session_id` (unique session identifier) `user_id`, `start_timestamp`, `end_timestamp` (_only needed for time lag model_), `session_time_before_conversion` _(just conversiont_timestamp - start_timestamp)_, `idle_time_preceding_session` _(for time lag model, this session start_at - previous session end_at)_
+    3. **CONVERSION_EVENT** - Must be linked to a `session_id`, (or you can just figure this out with `conversion_timestamp`);
+
+  *NOTE: For consistency and simplicity, all time (duration or point) data should be in a consistent format. For this article we will use seconds (which for a point in time is a UNIX timestamp or number of seconds since epoch)
+
+  ##2: The models
+
+  Avinash has a great explainer of the pros and cons of all attribution models here: [AVINASH LINK]() this page covers formulas for the following models:
+
+    1. Linear - distributes credit evenly across all sessions preceding conversion
+    2. Time Decay - distributes credit based on how close each session is to the conversion (more credit to more recent sessions)
+    3. Time Lag - distributes credit based on how long a user was idle before that session (sessions that bring a user back to the site after a long absence get more credit)
+
+  As Avinash concludes in his post, none of these is perfect, and every business has unique requirements that require customization, (details on customization covered at the end.)
+
+  ###Linear Multi-Touch Attribution formula
+
+  Required calculated metrics: sessions_before_conversion = COUNT(user sessions)
+
+  For each session: session_credit = 1 / sessions_before_conversion
+
+  ###Time Decay Attribution Formula
+
+  The key for this time decay formula is that credit is distributed _relative_ to the point at which the session occurred in the user's pre-conversion lifetime.  For example, a user with sessions on Jan 1, Jan 2, Jan 29 and converting session on Jan 30 will have a distribution that looks like this: ▁▂▇█ not like this: ▂▄▆█
+
+  Astute readers may see an issue: "How much credit do you give to the first session, which occurs at the zero time in a users lifetime?"  In order to get around this issue, we revert to an adjustable linear model for the first session.
+
+  Required calculated metrics:
+    user_sessions_before_conversion = COUNT(user_sessions_preceding_conversion) - on databases such as redshift make use of window functions to calculate this metric
+    user_lifetime_before_conversion = unix_timestamp(conversion_event) - unix_timestamp(first_session_start_at)
+    session_time_before_conversion = unix_timestamp(conversion_event) - unix_timestamp(session_start_at)
+    sum_of_session_times_before_conversion = SUM(session_time_before_conversion) *This is calculated at the user level, we need to know it in order to understand where in a user's lifetime all the sessions occur.*
+
+  Formula: *(for each session)*
+    **ONLY ONE SESSION**
+    session_credit = 1
+
+    **IF FIRST SESSION**
+    session_credit = 0.75 / user_sessions_before_conversion  *This is adjustable, a normal linear model would use 1, but I recommend using 0.75 because this results in a two-session lifetime giving 0.375 to the first session and 0.625 to the second (conversion) session.*
+
+    **ALL OTHER SESSIONS**
+    session_credit = (1 - (0.75 / user_sessions_before_conversion)) * ((1.0 - (session_time_before_unconfirm / user_lifetime_before_unconfirm )) / (user_sessions_before_unconfirm - (sum_of_session_times_before_conversion / user_lifetime_before_unconfirm)))58/59500

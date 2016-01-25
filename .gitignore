@@ -1,0 +1,17 @@
+[Tt]humbs.db
+*.DS_Store
+
+#BYO CSS, JS, IMAGES
+static/css/*
+static/img/*
+static/js/*
+
+/posts/*
+!/posts/a-test-post.yaml
+
+/templates/*
+!/templates/index-example.tpl
+!/templates/post-example.tpl
+
+config.yaml
+nginx.conf

@@ -1,0 +1,30 @@
+general:
+  domain: yourdomain.com
+  author: Your Name
+  description: A description of the site.
+  version: 0.1
+markdown_fields: [content]
+post_schema:
+  type: object
+  properties:
+    name:
+      type: string
+      maxLength: 65
+    description:
+      type: string
+      maxLength: 255
+    slug:
+      type: string
+      maxLength: 65
+      pattern: ^[A-Za-z0-9\-]+$
+    keywords:
+      type: array
+    content:
+      type: string
+    created_at:
+      type: string
+      maxLength: 10
+    updated_at:
+      type: string
+      maxLength: 10
+  required: [name, slug, content]
